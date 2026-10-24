@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Moneta">
+  <defs>
+    <radialGradient id="glow" cx="35%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#eef7c8"/>
+      <stop offset="55%" stop-color="#d8ed9b"/>
+      <stop offset="100%" stop-color="#a7cd8b"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#173f32"/>
+  <circle cx="256" cy="256" r="164" fill="none" stroke="#d8ed9b" stroke-opacity=".16" stroke-width="2"/>
+  <circle cx="256" cy="256" r="138" fill="url(#glow)"/>
+  <text x="256" y="332" text-anchor="middle" font-family="Iowan Old Style, Palatino, Georgia, serif" font-style="italic" font-size="248" font-weight="600" fill="#173f32">m</text>
+</svg>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#13251d" />
+  <title>Moneta — Offline Money Manager</title>
+  <meta name="description" content="A private, offline money manager for accounts, multi-currency balances, borrowing, lending and credit cards. All data stays on your device." />
+  <meta name="application-name" content="Moneta" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Moneta" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    (function () {
+      var preference = "system";
+      try {
+        var raw = window.localStorage.getItem("moneta.ledger.v1");
+        if (raw) {
+          var saved = JSON.parse(raw);
+          var theme = saved && saved.settings ? saved.settings.theme : "";
+          if (["light", "dark", "system"].indexOf(theme) !== -1) preference = theme;
+        }
+      } catch (error) {
+        /* Fall back to the system preference. */
+      }
+      var resolved =
+        preference === "system"
+          ? window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light"
+          : preference;
+      document.documentElement.dataset.theme = resolved;
+      document.documentElement.style.colorScheme = resolved;
+    })();
+  </script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <button class="brand" type="button" data-nav="overview" aria-label="Moneta — go to overview">
+        <span class="brand-mark" aria-hidden="true">m</span>
+        <span class="brand-copy">
+          <span class="brand-name">moneta</span>
+          <span class="brand-tag">private ledger</span>
+        </span>
+      </button>
+
+      <div class="side-label">Your ledger</div>
+      <nav class="side-nav" id="sideNav" aria-label="Primary"></nav>
+
+      <div class="side-bottom">
+        <div class="offline-card">
+          <span class="offline-icon" id="offlineIcon" aria-hidden="true"></span>
+          <div>
+            <p>Stored on this device</p>
+            <span>No cloud. No sign-in. No tracking.</span>
+          </div>
+          <span class="offline-dot" title="Offline"></span>
+        </div>
+        <button class="side-settings" type="button" data-nav="settings">
+          <span id="sideSettingsIcon" aria-hidden="true"></span>
+          <span>Settings &amp; backup</span>
+          <span class="side-version">v1.0</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <div class="mobile-brand">
+          <span class="brand-mark" aria-hidden="true">m</span>
+          <span class="brand-name">moneta</span>
+        </div>
+
+        <div class="topbar-heading">
+          <p class="topbar-kicker" id="topbarKicker"></p>
+          <h1 id="pageTitle">Overview</h1>
+          <p class="topbar-subtitle" id="pageSubtitle"></p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="chip-button" type="button" data-nav="settings" id="baseCurrencyBtn" title="Base currency and manual exchange rates">
+            <span class="chip-dot" aria-hidden="true"></span>
+            <span id="baseCurrencyLabel">USD</span>
+            <span id="baseCurrencyChevron" aria-hidden="true"></span>
+          </button>
+          <button class="icon-button" type="button" data-action="toggle-privacy" id="privacyBtn" aria-label="Hide amounts" title="Hide amounts">
+            <span id="privacyIcon" aria-hidden="true"></span>
+          </button>
+          <button class="icon-button settings-shortcut" type="button" data-nav="settings" aria-label="Open settings" title="Settings">
+            <span id="topSettingsIcon" aria-hidden="true"></span>
+          </button>
+          <button class="btn btn-primary" type="button" id="primaryBtn">
+            <span class="btn-icon" id="primaryIcon" aria-hidden="true"></span>
+            <span id="primaryLabel">Add transaction</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="view" id="view" tabindex="-1"></main>
+
+      <footer class="app-foot">
+        <span>Moneta runs entirely in your browser. Your records never leave this device.</span>
+        <button class="text-button" type="button" data-nav="settings">Backup your data</button>
+      </footer>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Primary mobile navigation"></nav>
+
+  <dialog class="modal" id="appModal" aria-labelledby="modalTitle"></dialog>
+
+  <input type="file" id="importFile" accept="application/json,.json" hidden />
+
+  <div class="toast-host" id="toastHost" role="status" aria-live="polite"></div>
+
+  <script src="js/core.js"></script>
+  <script src="js/views.js"></script>
+  <script src="js/views2.js"></script>
+  <script src="js/forms.js"></script>
+  <script src="js/forms2.js"></script>
+  <script src="vendor/sql-wasm.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
